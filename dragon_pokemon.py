@@ -4,13 +4,12 @@ import random
 
 class DragonType(Pokemon):
 
-    basic_attack = "Dragon Breath"
-    prob = 0.3
-
     def __init__(self, name, trainer, hp = None):
         super().__init__(name, trainer)
         if hp is not None:
             self.hp = hp
+        self.basic_attack = "Dragon Breath"
+        self.prob = 0.3
 
     def __str__(self):
         return (f" Pokemon name: {self.name} (Dragon Type)\t "
@@ -24,12 +23,13 @@ class DragonType(Pokemon):
             self.speak()
             print(f"{self.name} used {self.basic_attack}!")
 
-            # Dragon attack gives damage to others
             # Dragon type is not strong or weak against anything
-            #other.receive_damage(self.damage)
+            self.damage = Pokemon.damage
+            # Dragon attacks others
             super().attack(other)
-            # Chance to paralyze opponent based on prob
-            if random.random() < self.prob:
+            # Chance to paralyze others based on prob
+            if (random.random() < self.prob and
+                    type(other) != DragonType):
                 other.paralyzed = True
                 print(other.name, "is paralyzed!")
             # reset damage to original
